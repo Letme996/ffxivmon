@@ -73,16 +73,16 @@ namespace FFXIVMonReborn.Database
             }
         }
 
-        public MainDB GetDatabaseForCommitHash(string commitSha, bool ignoreCache = false)
+        public DatabaseParser GetDatabaseForCommitHash(string commitSha, bool ignoreCache = false)
         {
-            return new MainDB(Api.GetContent(commitSha, "/src/common/Network/PacketDef/Ipcs.h", ignoreCache),
+            return new DatabaseParser(Api.GetContent(commitSha, "/src/common/Network/PacketDef/Ipcs.h", ignoreCache),
                 Api.GetContent(commitSha, "/src/common/Common.h", ignoreCache),
                 Api.GetContent(commitSha, "/src/common/Network/PacketDef/Zone/ServerZoneDef.h", ignoreCache),
                 Api.GetContent(commitSha, "/src/common/Network/PacketDef/Zone/ClientZoneDef.h", ignoreCache),
                 Api.GetContent(commitSha, "/src/common/Network/CommonActorControl.h", ignoreCache));
         }
 
-        public MainDB GetDatabaseForVersion(int version)
+        public DatabaseParser GetDatabaseForVersion(int version)
         {
             if (Api.Tags.Length > version && version >= 0)
             {
@@ -90,7 +90,7 @@ namespace FFXIVMonReborn.Database
             }
             else
             {
-                return GetDatabaseForCommitHash(Api.Commits[Api.Commits.Length - 1].Sha);
+                return GetDatabaseForCommitHash(Api.Commits[0].Sha);
             }
         }
 
@@ -102,7 +102,7 @@ namespace FFXIVMonReborn.Database
             }
             else
             {
-                return $"Untagged Version: {Api.Commits[Api.Commits.Length - 1].Sha} - {Api.Commits[Api.Commits.Length - 1].CommitInfo.Message} by {Api.Commits[Api.Commits.Length - 1].CommitInfo.Author.Name}";
+                return $"Untagged Version: {Api.Commits[0].Sha} - {Api.Commits[0].CommitInfo.Message} by {Api.Commits[0].CommitInfo.Author.Name}";
             }
         }
     }
